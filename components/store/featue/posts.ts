@@ -1,21 +1,8 @@
 import { createSlice } from "@reduxjs/toolkit";
 import getPosts from '@/pages/api/redditPosts';
+import { ActionType } from "@/types/types";
 
 const initialState: [] = [];
-
-interface Payload {
-    title: string;
-    score: number;
-    author: string;
-    commentsCount: number;
-    content: string;
-}
-  
-
-interface Action {
-    type: string,
-    payload: Payload,
-}
 
 const getPostsAction = async() => {
     const posts = getPosts('GenshinInpact', 10);
@@ -26,7 +13,7 @@ const getPostsAction = async() => {
     }
 }
 
-const postReducer = (state = initialState, action: Action) => {
+const postReducer = (state = initialState, action: ActionType) => {
     switch (action.type) {
       case 'GET_POSTS':
         return {
@@ -51,3 +38,5 @@ const postSlice = createSlice({
     postReducer,
   }
 })
+
+export {getPostsAction};

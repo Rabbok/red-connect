@@ -1,15 +1,14 @@
 import React from 'react';
-import { Provider } from 'react-redux';
-import store from "../store/store";
 import Post from "../post/Post";
+import { ContentProps } from '@/types/types';
 
-const Content = () => {
+const Content: React.FC<ContentProps> = ({ posts }) => {
   return (
-    <Provider store={store}>
-      <div className="flex justify-center m-12">
-        <Post />
-      </div>
-    </Provider>
+    <div className="flex items-center flex-col m-12">
+      {posts.map((post, index) => {
+        return <Post post={post} key={index} />
+      })}
+    </div>
   );
 };
 
