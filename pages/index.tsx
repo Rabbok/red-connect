@@ -1,13 +1,36 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import Head from 'next/head';
 import Layout from '@/components/layout/Layout';
-import { GetStaticProps } from 'next';
 import getPosts from './api/redditPosts';
 import { HomeProps } from '@/types/types';
+import store from '@/components/store/store';
+import { setDataState } from '@/components/store/postDataSlice';
+import { useDispatch, useSelector } from 'react-redux';
 
 const Home: React.FC<HomeProps> = ({ posts }) => {
+  const dispatch = useDispatch();
+  const dataState = useSelector((state: any) => state.data.dataState);
+  const searchQuery = useSelector((state: any) => state.search.searchQuery);
+
+  useEffect(() => {
+    if (dataState.length === 0) {
+      getUpdatedPosts(searchQuery);
+    }
+  }, []);
+
+  useEffect(() => {
+    getUpdatedPosts(searchQuery);
+  }, [searchQuery]);
+
+  const getUpdatedPosts = async (query: any) => {
+    const updatedPosts = await getPosts(query || 'AskReddit', 10);
+    dispatch(setDataState(updatedPosts));
+  };
+
+  console.log(dataState);
+
   return (
-    <Layout posts={posts}>
+    <Layout>
       <Head>
         <title>RedConnect</title>
       </Head>
@@ -16,7 +39,7 @@ const Home: React.FC<HomeProps> = ({ posts }) => {
 };
 
 export async function getStaticProps() {
-  const posts = await getPosts('programming', 100);
+  const posts = await getPosts(store.getState().search.searchQuery || 'AskReddit', 10);
 
   return {
     props: {

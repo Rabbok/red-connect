@@ -9,6 +9,10 @@ module.exports = {
     extend: {
       colors: {
         red: '#F52B2B',
+        gray: '#EBEBEB',
+      },
+      borderRadius: {
+        large: '15px',
       }
     },
   },

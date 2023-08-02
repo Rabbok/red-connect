@@ -29,7 +29,7 @@ const getPosts = async (subreddit: string, limit: number): Promise<PostType[]> =
   try {
     const accessToken = await getAccessToken();
     const response: AxiosResponse<any> = await axios.get(
-      ` https://oauth.reddit.com/r/${subreddit}/hot.json?limit=${limit}`,
+      `https://oauth.reddit.com/r/${subreddit}/hot.json?limit=${limit}`,
       {
         headers: {
           Authorization: `Bearer ${accessToken}`,
@@ -38,43 +38,35 @@ const getPosts = async (subreddit: string, limit: number): Promise<PostType[]> =
     );
 
     if (response.status !== 200) {
-      throw new Error(`Failed to fetch posts. Status code: ${response.status}`);
+      console.error(`Failed to fetch posts. Status code: ${response.status}`);
+      return []; // Return an empty array when there's an error
     }
 
     const responseData = response.data;
 
     const posts: PostType[] = responseData.data.children.map((post: any) => {
       const contentData = post.data;
-      let mediaData: MediaData | null = null; // Initialize mediaData to null
 
-      // Check if the post contains media (image or video)
-      if (contentData.media && contentData.media.reddit_video) {
-        // Handle Reddit hosted videos
-        mediaData = {
-          type: 'video',
-          url: contentData.media.reddit_video.fallback_url,
-        };
-      } else if (contentData.preview && contentData.preview.images[0].source.url) {
-        // Handle images
-        mediaData = {
-          type: 'image',
-          url: contentData.preview.images[0].source.url,
-        };
-      }
+      // Get the post's publication date (created_utc) and convert it to a string
+      const publicationDate = new Date(contentData.created_utc * 1000).toISOString();
 
-      return {
+      // Construct the post object with the link property
+      const postObject: PostType = {
         title: contentData.title,
         score: contentData.score,
         author: contentData.author,
         commentsCount: contentData.num_comments,
-        media: mediaData, // Pass the media data object
+        publicationDate: publicationDate.slice(0, 10),
+        link: `https://www.reddit.com${contentData.permalink}`,
       };
+
+      return postObject;
     });
 
     return posts;
   } catch (error: any) {
-    console.error('Error while fetching data:', error);
-    throw new Error(`Something went wrong: ${error.message}`);
+    console.error('Error while fetching or processing data:', error);
+    return []; 
   }
 };
 

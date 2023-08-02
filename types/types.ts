@@ -3,30 +3,44 @@ interface ActionType {
     payload: any,
 }
 
-interface PostType {
-    title: string;
-    score: number;
-    author: string;
-    commentsCount: number;
-    media: any;
+interface MediaData {
+    type: string,
+    url: string,
 }
 
+interface PostType {
+    title: string,
+    score: number,
+    author: string,
+    commentsCount: number,
+    publicationDate: string,
+    link: string,
+}
+  
 interface HomeProps {
-    posts: PostType[];
+    posts: PostType[],
 }
 
 interface LayoutProps {
-    children: React.ReactNode;
-    posts: PostType[];
+    children: React.ReactNode,
 }
 
 interface ContentProps {
-    posts: PostType[];
+    posts: PostType[],
 }
 
 interface MediaData {
-    type: string;
-    url: string;
-  }
+    type: string,
+    url: string,
+}
 
-export type { ActionType, PostType, HomeProps, LayoutProps, ContentProps, MediaData }
+interface RootState {
+    search: {
+        searchQuery: string;
+    };
+    data: {
+        dataState: PostType[];
+    }
+}
+
+export type { ActionType, PostType, HomeProps, LayoutProps, ContentProps, MediaData, RootState }
