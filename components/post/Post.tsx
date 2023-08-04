@@ -10,7 +10,7 @@ const Post = (props: { post: PostType }) => {
   return (
     <div className="rounded-lg border border-black w-3/4 bg-white m-2" onClick={handleClick}>
       <div className="flex items-center border-b border-black">
-        <p className="text-xs py-2 px-4 w-1/4 h-full text-center text-gray-400 font-bold border-r border-black">Posted by <NextLink href={`https://www.reddit.com/user/${props.post.author}/`} className="text-red" target="_blank" passHref>{props.post.author}</NextLink></p>
+        <p className="text-xs py-2 px-4 w-1/4 h-full text-center text-gray-400 font-bold border-r border-black">Posted by <NextLink href={`https://www.reddit.com/user/${props.post.author}/`} className="text-customRed" target="_blank" passHref>{props.post.author}</NextLink></p>
         <NextLink className="text-xs py-2 px-4 w-3/4 h-full text-center"  href={props.post.link} target="_blank" passHref>{props.post.title}</NextLink>
       </div>
 
@@ -25,7 +25,7 @@ const Post = (props: { post: PostType }) => {
           <p className="text-base select-none">{props.post.commentsCount}</p>
         </div>
 
-        <p className="text-gray-400 font-bold text-xs mx-2">posted <span className="text-red">{props.post.publicationDate}</span></p>
+        <p className="text-gray-400 font-bold text-xs mx-2">posted <span className="text-customRed">{props.post.publicationDate}</span></p>
       </div>
     </div>
   );

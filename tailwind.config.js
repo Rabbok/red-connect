@@ -8,8 +8,8 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        red: '#F52B2B',
-        gray: '#EBEBEB',
+        customRed: '#F52B2B',
+        customGray: '#EBEBEB',
       },
       borderRadius: {
         large: '15px',

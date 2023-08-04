@@ -7,10 +7,11 @@ import store from '@/components/store/store';
 import { setDataState } from '@/components/store/postDataSlice';
 import { useDispatch, useSelector } from 'react-redux';
 
-const Home: React.FC<HomeProps> = ({ posts }) => {
+const Home: React.FC<HomeProps> = () => {
   const dispatch = useDispatch();
   const dataState = useSelector((state: any) => state.data.dataState);
   const searchQuery = useSelector((state: any) => state.search.searchQuery);
+  const filterState = useSelector((state: any) => state.filter.filterState);
 
   useEffect(() => {
     if (dataState.length === 0) {
@@ -20,14 +21,12 @@ const Home: React.FC<HomeProps> = ({ posts }) => {
 
   useEffect(() => {
     getUpdatedPosts(searchQuery);
-  }, [searchQuery]);
+  }, [searchQuery, filterState]);
 
   const getUpdatedPosts = async (query: any) => {
-    const updatedPosts = await getPosts(query || 'AskReddit', 10);
+    const updatedPosts = await getPosts(query || 'popular', 10, filterState);
     dispatch(setDataState(updatedPosts));
   };
-
-  console.log(dataState);
 
   return (
     <Layout>
@@ -39,7 +38,7 @@ const Home: React.FC<HomeProps> = ({ posts }) => {
 };
 
 export async function getStaticProps() {
-  const posts = await getPosts(store.getState().search.searchQuery || 'AskReddit', 10);
+  const posts = await getPosts(store.getState().search.searchQuery || 'AskReddit', 10, store.getState().filter.filterState);
 
   return {
     props: {

@@ -1,6 +1,5 @@
 import { PostType } from '@/types/types';
 import axios, { AxiosResponse } from 'axios';
-import { MediaData } from '@/types/types';
 
 const clientId = 'rmvPmeRsnI8jF0hwCC_I0Q';
 const clientSecret = 'rEWO2eYfjvp7Lvhu1kCSID_5fPMtBg';
@@ -25,11 +24,11 @@ async function getAccessToken(): Promise<string> {
   }
 }
 
-const getPosts = async (subreddit: string, limit: number): Promise<PostType[]> => {
+const getPosts = async (subreddit: string, limit: number, filter: string): Promise<PostType[]> => {
   try {
     const accessToken = await getAccessToken();
     const response: AxiosResponse<any> = await axios.get(
-      `https://oauth.reddit.com/r/${subreddit}/hot.json?limit=${limit}`,
+      `https://oauth.reddit.com/r/${subreddit}/${filter}.json?limit=${limit}`,
       {
         headers: {
           Authorization: `Bearer ${accessToken}`,

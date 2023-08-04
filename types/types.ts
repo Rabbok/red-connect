@@ -29,11 +29,6 @@ interface ContentProps {
     posts: PostType[],
 }
 
-interface MediaData {
-    type: string,
-    url: string,
-}
-
 interface RootState {
     search: {
         searchQuery: string;
@@ -43,4 +38,8 @@ interface RootState {
     }
 }
 
-export type { ActionType, PostType, HomeProps, LayoutProps, ContentProps, MediaData, RootState }
+interface Filter {
+    filterState: 'best' | 'hot' | 'new',
+}
+
+export type { ActionType, PostType, HomeProps, LayoutProps, ContentProps, RootState, Filter }
